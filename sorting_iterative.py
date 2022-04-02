@@ -61,7 +61,7 @@ def selection_sort(items):
 
   TODO: Running time: ??? Why and under what conditions?
 
-  The runetime is o(n^2) because for each number in the array, we 
+  The runtime is o(n^2) because for each number in the array, we 
   need to scan through the entire array and search for a number 
   that is smaller than the current number. This requires a nested 
   for loop which makes the runtime exponential.
