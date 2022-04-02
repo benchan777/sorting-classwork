@@ -65,7 +65,11 @@ def merge_sort(items):
         return items
     else:
         midpoint = len(items) // 2
-        return merge(merge_sort(items[:midpoint]), merge_sort(items[midpoint:]), [])
+        temp = merge(merge_sort(items[:midpoint]), merge_sort(items[midpoint:]), [])
+
+    for i in range(len(temp)):
+        items[i] = temp[i]
+    return items
 
 def partition(items, low, high):
     """Return index `p` after in-place partitioning given items in range
@@ -94,7 +98,7 @@ def quick_sort(items, low=None, high=None):
 
 # arr1 = [1,3,5,6]
 # arr2 = [2,3,4,7,8]
-arr3 = [4,67,2,4,6,8,4,2,56,8,534,5,45]
-print(arr3)
-merge_sort(arr3)
-print(arr3)
+# arr3 = [4,67,2,4,6,8,4,2,56,8,534,5,45]
+# print(arr3)
+# merge_sort(arr3)
+# print(arr3)
