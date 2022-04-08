@@ -146,3 +146,16 @@ def quick_sort(items, low=None, high=None):
 
         quick_sort(items, low, pivotIndex - 1)
         quick_sort(items, pivotIndex + 1, high)
+
+def partition2(items):
+    low_array, high_array, pivot = [], [], items.pop(0)
+    [low_array.append(item) if item < pivot else high_array.append(item) for item in items]
+    return pivot, low_array, high_array
+
+def quick_sort2(items):
+    if len(items) <= 1: return items
+    partition = partition2(items)
+    return quick_sort2(partition[1]) + [partition[0]] + quick_sort2(partition[2])
+
+arr = [42,65,27,50,96,11,83]
+print(quick_sort2(arr))
