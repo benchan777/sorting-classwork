@@ -59,16 +59,19 @@ class PrefixTree:
     def insert(self, string):
         """Insert the given string into this prefix tree."""
         # TODO
-        new_word = False
+        new_word = False # temp fix
         temp_node = self.root
 
         for letter in string:
             if not temp_node.has_child(letter):
-                new_word = True
+                new_word = True # temp fix
                 new_node = PrefixTreeNode(letter)
                 temp_node.add_child(letter, new_node)
+                # self.size += 1 # previously enabled
                 
             temp_node = temp_node.children[letter]
+        
+        # temp fix
         if new_word == True:
             self.size += 1
         temp_node.terminal = True
@@ -83,7 +86,14 @@ class PrefixTree:
             return self.root, 0
         # Start with the root node
         node = self.root
+        depth = 0
         # TODO
+        for character in string:
+            if not node.has_child(character):
+                return [], None
+            node = node.children[character]
+            depth += 1
+        return node, depth
 
     def complete(self, prefix):
         """Return a list of all strings stored in this prefix tree that start
@@ -91,13 +101,8 @@ class PrefixTree:
         # Create a list of completions in prefix tree
         # completions = []
         # TODO
-        temp_node = self.root
-        for letter in prefix:
-            if not temp_node.has_child(letter):
-                return []
-            temp_node = temp_node.children[letter]
-        
-        return self._traverse(temp_node, prefix, [])
+        node, _ = self._find_node(prefix)
+        return self._traverse(node, prefix, []) if node else []
 
     def strings(self):
         """Return a list of all strings stored in this prefix tree."""
@@ -180,6 +185,7 @@ def main():
         create_prefix_tree(strings)
         if len(tongue_twisters) > 1:
             print('\n' + '='*80 + '\n')
+    # tree = 
 
 
 if __name__ == '__main__':
