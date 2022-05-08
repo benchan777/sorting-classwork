@@ -22,16 +22,24 @@ class BinaryMinHeap(object):
     def is_empty(self):
         """Return True if this heap is empty, or False otherwise."""
         # TODO: Check if empty based on how many items are in the list
-        # ...
+        return True if len(self.items) == 0 else False
 
     def size(self):
         """Return the number of items in this heap."""
         return len(self.items)
 
     def insert(self, item):
-        """Insert the given item into this heap.
+        """
+        Insert the given item into this heap.
         TODO: Best case running time: ??? under what conditions?
-        TODO: Worst case running time: ??? under what conditions?"""
+        The best case runtime is O(1) which occurs if the number being inserted 
+        into the min heap is greater than all the existing numbers already within 
+        the heap.
+        TODO: Worst case running time: ??? under what conditions?
+        The worst case runtime is O(logn) if the number being inserted needs to 
+        be moved all the way from the bottom of the heap to the top of the 
+        heap, or in other words, a new minimum
+        """
         # Insert the item at the end and bubble up to the root
         self.items.append(item)
         if self.size() > 1:
@@ -46,9 +54,16 @@ class BinaryMinHeap(object):
         return self.items[0]
 
     def delete_min(self):
-        """Remove and return the minimum item at the root of this heap.
+        """
+        Remove and return the minimum item at the root of this heap.
         TODO: Best case running time: ??? under what conditions?
-        TODO: Worst case running time: ??? under what conditions?"""
+        The best case is O(1) if there is only one item in the heap. Deleting 
+        the single item would not trigger the need to bubble down.
+        TODO: Worst case running time: ??? under what conditions?
+        The worst case runtime is O(logN) because the swap of the largest number 
+        to the top of the heap will always require bubbling that number all the 
+        way to the proper spot.
+        """
         if self.size() == 0:
             raise ValueError('Heap is empty and has no minimum item')
         elif self.size() == 1:
@@ -64,11 +79,18 @@ class BinaryMinHeap(object):
         return min_item
 
     def replace_min(self, item):
-        """Remove and return the minimum item at the root of this heap,
+        """
+        Remove and return the minimum item at the root of this heap,
         and insert the given item into this heap.
         This method is more efficient than calling delete_min and then insert.
         TODO: Best case running time: ??? under what conditions?
-        TODO: Worst case running time: ??? under what conditions?"""
+        The best case is O(1) if the newly inserted item happens to be the new 
+        minimum which will not require any bubbling down.
+        TODO: Worst case running time: ??? under what conditions?
+        The worst case runtime is O(logN) which occurs if the newly inserted 
+        item happens to be the largest number in the heap which will require 
+        bubbling all the way down.
+        """
         if self.size() == 0:
             raise ValueError('Heap is empty and has no minimum item')
         assert self.size() > 0
@@ -95,9 +117,10 @@ class BinaryMinHeap(object):
         parent_index = self._parent_index(index)
         parent_item = self.items[parent_index]
         # TODO: Swap this item with parent item if values are out of order
-        # ...
+        if item < parent_item:
+            self.items[index], self.items[parent_index] = self.items[parent_index], self.items[index]
         # TODO: Recursively bubble up again if necessary
-        # ...
+            self._bubble_up(parent_index)
 
     def _bubble_down(self, index):
         """Ensure the heap ordering property is true below the given index,
@@ -116,12 +139,19 @@ class BinaryMinHeap(object):
         item = self.items[index]
         # TODO: Determine which child item to compare this node's item to
         child_index = 0
-        # ...
+        if 0 <= left_index <= self._last_index() and 0 <= right_index <= self._last_index():
+            child_index = left_index if self.items[left_index] < self.items[right_index] else right_index
+        elif not 0 <= left_index <= self._last_index():
+            child_index = right_index
+        else:
+            child_index = left_index
+        
         # TODO: Swap this item with a child item if values are out of order
         child_item = self.items[child_index]
-        # ...
+        if item > child_item:
+            self.items[index], self.items[child_index] = self.items[child_index], self.items[index]
         # TODO: Recursively bubble down again if necessary
-        # ...
+            self._bubble_down(child_index)
 
     def _last_index(self):
         """Return the last valid index in the underlying array of items."""
